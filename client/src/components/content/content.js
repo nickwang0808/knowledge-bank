@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import CKEditor from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
-import { Box, Input, InputBase, makeStyles } from "@material-ui/core";
+import { Box, InputBase, makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   title: {
