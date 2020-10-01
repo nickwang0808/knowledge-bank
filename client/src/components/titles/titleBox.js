@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Divider, IconButton, makeStyles } from "@material-ui/core";
 import { DeleteOutline } from "@material-ui/icons";
+import moment from "moment";
 
 const useStyles = makeStyles({
   container: {
     padding: "16px 24px 0 24px",
     position: "relative",
+    cursor: "pointer",
+  },
+  containerSelected: {
+    border: "2px solid #e0e0e0",
+    borderRadius: "3px",
   },
   title: {
     fontSize: "16px",
@@ -30,43 +36,51 @@ const useStyles = makeStyles({
     display: "inline",
     position: "absolute",
     top: "4px",
-    right: "16px",
+    right: "4px",
     color: "inherit",
   },
   deleteButton: {
     fontSize: "20px",
-    color: "inherit",
+    color: "white",
   },
 });
 
-export default function TitleBox() {
+export default function TitleBox({ data, setSelected, deleteData }) {
   const classes = useStyles();
+  const [mouseEnter, setMouseEnter] = useState(false);
 
   return (
     <>
       <Box
-        className={`${classes.container} ${"hvr-fade"}`}
+        className={`${classes.container} ${"hvr-fade"} `}
         display="flex"
         flexDirection="column"
-        onClick={() => console.log("container")}
+        onClick={() => {
+          setSelected(data);
+        }}
+        onMouseEnter={() => setMouseEnter(true)}
+        onMouseLeave={() => setMouseEnter(false)}
       >
-        <Box className={classes.deleteButtonContainer} zIndex="9999">
-          <IconButton
-            className={classes.deleteButton}
-            onClick={(e) => {
-              e.stopPropagation();
-              console.log("delete");
-            }}
-          >
-            <DeleteOutline className={classes.deleteButton} />
-          </IconButton>
+        {mouseEnter && (
+          <Box className={classes.deleteButtonContainer} zIndex="9999">
+            <IconButton
+              className={classes.deleteButton}
+              onClick={(e) => {
+                e.stopPropagation();
+                console.log("delete");
+                deleteData(data._id);
+              }}
+            >
+              <DeleteOutline className={classes.deleteButton} />
+            </IconButton>
+          </Box>
+        )}
+        <Box className={classes.title}>{data.title}</Box>
+        <Box className={classes.date}>
+          {moment(parseInt(data.date, 10)).startOf("hour").fromNow()}
         </Box>
-        <Box className={classes.title}>Title</Box>
-        <Box className={classes.date}>4 days ago</Box>
         <Box className={classes.body}>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos
-          blanditiis tenetur unde suscipit, quam beatae rerum inventore
-          consectetur, neque dolorib
+          {data.body.replace(/<\/?[^>]+(>|$)/g, " ")}
         </Box>
 
         <Divider style={{ marginTop: "14px" }} light />

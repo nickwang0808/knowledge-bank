@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CKEditor from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
@@ -14,25 +14,62 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Content() {
+export default function Content({
+  selected,
+  updateData,
+  createNew,
+  createDataToServer,
+}) {
   const classes = useStyles();
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState("");
 
-  const [value, setValue] = useState("<p>Hello from CKEditor 5!</p>");
+  useEffect(() => {
+    selected && setTitle(selected.title);
+    selected && setBody(selected.body);
+  }, [selected]);
+
+  const updateDataToGlobal = () => {
+    createNew
+      ? createDataToServer({
+          title: title,
+          body: body,
+          author: "Nick",
+        })
+      : updateData({
+          _id: selected._id,
+          title: title,
+          body: body,
+        });
+  };
 
   return (
     <Box pl={2} pt={2}>
-      <InputBase className={classes.title} placeholder="title" />
-      <CKEditor
-        editor={ClassicEditor}
-        data={value}
-        onInit={(editor) => {
-          // You can store the "editor" and use when it is needed.
-          console.log("Editor is ready to use!", editor);
-        }}
-        onChange={(event, editor) => {
-          setValue(editor.getData());
-        }}
-      />
+      {selected && (
+        <>
+          <InputBase
+            className={classes.title}
+            placeholder="New Document Tittle"
+            autoFocus={createNew ? true : false}
+            value={title || ""}
+            onChange={(e) => setTitle(e.target.value)}
+            onBlur={updateDataToGlobal}
+          />
+          <CKEditor
+            editor={ClassicEditor}
+            data={body || ""}
+            onInit={(editor) => {
+              // You can store the "editor" and use when it is needed.
+              console.log("Editor is ready to use!", editor);
+            }}
+            onChange={(event, editor) => {
+              // console.log("CKEditor onChange");
+              setBody(editor.getData());
+            }}
+            onBlur={updateDataToGlobal}
+          />
+        </>
+      )}
     </Box>
   );
 }

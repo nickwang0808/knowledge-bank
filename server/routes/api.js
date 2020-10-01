@@ -22,7 +22,8 @@ const knowledgeSchema = new Schema({
 
 const knowledgeModel = mongoose.model("knowledge", knowledgeSchema);
 
-router.post("/create", async (req, res) => {
+// create
+router.post("/content", async (req, res) => {
   const data = new knowledgeModel({
     title: req.body.title,
     body: req.body.body,
@@ -40,7 +41,7 @@ router.post("/create", async (req, res) => {
   }
 });
 
-router.get("/get", async (req, res) => {
+router.get("/content", async (req, res) => {
   const allKnowledge = await knowledgeModel.find();
 
   try {
@@ -50,21 +51,21 @@ router.get("/get", async (req, res) => {
   }
 });
 
-router.patch("/update/:id", async (req, res) => {
+router.patch("/content/:id", async (req, res) => {
   try {
     const updatedKnowledge = await knowledgeModel.findByIdAndUpdate(
       req.params.id,
-      req.body
+      { title: req.body.title, body: req.body.body }
     );
     await updatedKnowledge.save();
-    res.status(200).send(updatedKnowledge);
+    res.status(200).json(updatedKnowledge);
   } catch (err) {
     console.log(err);
     res.status(500).send(err);
   }
 });
 
-router.delete("/delete/:id", async (req, res) => {
+router.delete("/content/:id", async (req, res) => {
   knowledgeModel.findByIdAndDelete(req.params.id, (err, doc) => {
     if (err) {
       console.log(err);

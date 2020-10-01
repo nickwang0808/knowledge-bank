@@ -4,7 +4,7 @@ const { createMuiTheme } = require("@material-ui/core");
 
 export const theme = createMuiTheme({
   palette: {
-    primary: green,
+    primary: { main: "#2dbe60" },
     secondary: lightBlue,
   },
 });

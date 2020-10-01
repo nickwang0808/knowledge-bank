@@ -13,3 +13,7 @@
 
 - GET all data
 - POST add new data
+
+##### note
+
+update selected to global allData
