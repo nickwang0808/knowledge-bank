@@ -16,4 +16,4 @@
 
 ##### note
 
-update selected to global allData
+implement passportjs for auth
