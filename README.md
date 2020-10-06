@@ -16,4 +16,6 @@
 
 ##### note
 
-implement passportjs for auth
+now lets set up passport,
+
+response.isLoggedIn is undefined, fix it

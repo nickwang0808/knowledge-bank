@@ -1,10 +1,57 @@
 import React, { useEffect, useState } from "react";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
+
 import { Box, IconButton } from "@material-ui/core";
 import TitleColumn from "./components/titles/titleColumn";
 import Content from "./components/content/content";
 import { Add } from "@material-ui/icons";
+import Auth from "./components/auth/auth";
 
 export default function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(null);
+
+  const checkAuth = async () => {
+    const url = "http://localhost:4000/check-auth";
+    const response = await fetch(url, {
+      withCredentials: true,
+      credentials: "include",
+    }).then((res) => res.json());
+    // why is this undefined
+    console.log(response.isLoggedIn);
+
+    if (response.isLoggedIn) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  };
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
+  return (
+    <>
+      <Router>
+        <Switch>
+          <Route exact path="/auth">
+            {isLoggedIn ? <Redirect to="/" /> : <Auth checkAuth={checkAuth} />}
+          </Route>
+          <Route exact path="/">
+            {!isLoggedIn ? <Redirect to="/auth" /> : <MainUI />}
+          </Route>
+        </Switch>
+      </Router>
+    </>
+  );
+}
+
+export function MainUI() {
   const [allData, setAllData] = useState([]);
   const [selected, setSelected] = useState(null);
   const [createNew, setCreateNew] = useState(false);
@@ -72,7 +119,7 @@ export default function App() {
   async function createDataToServer(data) {
     console.log("data: ", data);
     const url = `http://localhost:4000/api/content/`;
-    const response = await fetch(url, {
+    await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -82,7 +129,6 @@ export default function App() {
     setCreateNew(false);
     getData();
   }
-
   return (
     <>
       <Box display="flex" height="100vh">

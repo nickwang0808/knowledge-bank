@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Box, Divider, IconButton, makeStyles } from "@material-ui/core";
 import { DeleteOutline } from "@material-ui/icons";
 import moment from "moment";
