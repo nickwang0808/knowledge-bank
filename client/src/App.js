@@ -10,7 +10,7 @@ import { Box, IconButton } from "@material-ui/core";
 import TitleColumn from "./components/titles/titleColumn";
 import Content from "./components/content/content";
 import { Add } from "@material-ui/icons";
-import Auth from "./auth";
+import Auth from "./components/auth/auth";
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(null);
@@ -47,7 +47,6 @@ export default function App() {
           </Route>
         </Switch>
       </Router>
-      ;
     </>
   );
 }
@@ -120,7 +119,7 @@ export function MainUI() {
   async function createDataToServer(data) {
     console.log("data: ", data);
     const url = `http://localhost:4000/api/content/`;
-    const response = await fetch(url, {
+    await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

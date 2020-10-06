@@ -1,10 +1,10 @@
-import { green, lightBlue } from "@material-ui/core/colors";
+import { lightBlue } from "@material-ui/core/colors";
 
 const { createMuiTheme } = require("@material-ui/core");
 
 export const theme = createMuiTheme({
   palette: {
-    primary: { main: "#2dbe60" },
+    primary: { main: "#008f26" },
     secondary: lightBlue,
   },
 });
