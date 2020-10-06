@@ -1,28 +1,46 @@
 const express = require("express");
 const router = express.Router();
-const mongoose = require("mongoose");
-const { Schema } = mongoose;
+const knowledgeModel = require("./schema").knowledgeModel;
+const userModel = require("./schema").UserModel;
 
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
+require("./auth")(router, userModel);
 
-mongoose.set("useFindAndModify", false);
+const passport = require("passport");
 
-const connectionStatus = () =>
-  console.log("connection State: ", mongoose.connection.readyState);
+const SIGNINURL = "http://localhost:3000/";
 
-mongoose.connection.on("connected", () => connectionStatus());
-mongoose.connection.on("disconnected", () => connectionStatus());
+router.post(
+  "/login",
+  passport.authenticate("local", {
+    successRedirect: "/check-auth",
+    failureRedirect: SIGNINURL,
+  })
+);
 
-const knowledgeSchema = new Schema({
-  title: { type: String, required: true },
-  body: String,
-  author: String,
-  date: { type: String, default: Date.now },
+router.post("/register", (req, res) => {
+  userModel.findOne({ username: req.body.username }, async (err, username) => {
+    if (err) {
+      res.status(500).send("something wrong happened");
+    } else if (username) {
+      res.status(500).send("the user already exist");
+    } else {
+      const data = new userModel({
+        username: req.body.username,
+        password: req.body.password,
+      });
+
+      try {
+        await data.save();
+        res.status(200).send("registration successful");
+      } catch (err) {
+        console.log(err);
+        res.status(500).send("something wrong happened");
+      }
+    }
+  });
 });
 
-const knowledgeModel = mongoose.model("knowledge", knowledgeSchema);
-
-// create
+// =============== CRUD =================
 router.post("/content", async (req, res) => {
   const data = new knowledgeModel({
     title: req.body.title,
@@ -31,9 +49,7 @@ router.post("/content", async (req, res) => {
   });
 
   try {
-    newData = await data.save();
-    console.log(newData);
-    console.log("update sucess");
+    const newData = await data.save(); // un declared variable
     res.sendStatus(200);
   } catch (err) {
     console.log(err);
