@@ -1,0 +1,6 @@
+# Prisma Migrate lockfile v1
+
+20201010135509-init
+20201010140550-add-date
+20201010142239-unique-username
+20201011033431-add-note

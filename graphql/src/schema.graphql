@@ -1,0 +1,32 @@
+type Query {
+  info: String!
+  users: [User]
+  allNotes: [Note!]!
+}
+
+type Mutation {
+  signUp(username: String!, password: String!): AuthPayload
+  login(username: String!, password: String!): AuthPayload
+  create(title: String!, body: String): Note!
+  update(id: ID!, title: String!, body: String): Note!
+  deleteNote(id: ID!): Boolean!
+}
+
+type AuthPayload {
+  token: String
+  user: User
+}
+
+type User {
+  id: ID!
+  username: String!
+  password: String!
+  notes: [Note!]!
+}
+
+type Note {
+  id: ID!
+  title: String!
+  body: String
+  author: User!
+}

@@ -16,6 +16,6 @@
 
 ##### note
 
-now lets set up passport,
+implement graphql
 
-response.isLoggedIn is undefined, fix it
+- crud
