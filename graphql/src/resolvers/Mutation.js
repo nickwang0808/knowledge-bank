@@ -87,6 +87,7 @@ async function deleteNote(parent, args, context) {
 module.exports = {
   create,
   update,
+  deleteNote,
   signUp,
   login,
 };

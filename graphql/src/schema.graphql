@@ -1,6 +1,4 @@
 type Query {
-  info: String!
-  users: [User]
   allNotes: [Note!]!
 }
 
@@ -13,6 +11,7 @@ type Mutation {
 }
 
 type AuthPayload {
+  isLoggedIn: true
   token: String
   user: User
 }
