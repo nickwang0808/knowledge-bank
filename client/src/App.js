@@ -9,126 +9,71 @@ import {
 import { Box, IconButton } from "@material-ui/core";
 import TitleColumn from "./components/titles/titleColumn";
 import Content from "./components/content/content";
+import NewContent from "./components/content/newContent";
 import { Add } from "@material-ui/icons";
 import Auth from "./components/auth/auth";
+import { useQuery, gql, useMutation } from "@apollo/client";
+import { getData, update, deleteNote, create } from "./gql";
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(null);
 
-  const checkAuth = async () => {
-    const url = "http://localhost:4000/check-auth";
-    const response = await fetch(url, {
-      withCredentials: true,
-      credentials: "include",
-    }).then((res) => res.json());
-    // why is this undefined
-    console.log(response.isLoggedIn);
+  // const checkAuth = async () => {
+  //   const url = "http://localhost:4000/check-auth";
+  //   const response = await fetch(url, {
+  //     withCredentials: true,
+  //     credentials: "include",
+  //   }).then((res) => res.json());
+  //   // why is this undefined
+  //   console.log(response.isLoggedIn);
 
-    if (response.isLoggedIn) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    }
-  };
+  //   if (response.isLoggedIn) {
+  //     setIsLoggedIn(true);
+  //   } else {
+  //     setIsLoggedIn(false);
+  //   }
+  // };
 
-  useEffect(() => {
-    checkAuth();
-  }, []);
+  // useEffect(() => {
+  //   checkAuth();
+  // }, []);
 
-  return (
-    <>
-      <Router>
-        <Switch>
-          <Route exact path="/auth">
-            {isLoggedIn ? <Redirect to="/" /> : <Auth checkAuth={checkAuth} />}
-          </Route>
-          <Route exact path="/">
-            {!isLoggedIn ? <Redirect to="/auth" /> : <MainUI />}
-          </Route>
-        </Switch>
-      </Router>
-    </>
-  );
+  // return (
+  //   <>
+  //     <Router>
+  //       <Switch>
+  //         <Route exact path="/auth">
+  //           {isLoggedIn ? <Redirect to="/" /> : <Auth checkAuth={checkAuth} />}
+  //         </Route>
+  //         <Route exact path="/">
+  //           {!isLoggedIn ? <Redirect to="/auth" /> : <MainUI />}
+  //         </Route>
+  //       </Switch>
+  //     </Router>
+  //   </>
+  // );
+  return <MainUI />;
 }
 
 export function MainUI() {
-  const [allData, setAllData] = useState([]);
   const [selected, setSelected] = useState(null);
   const [createNew, setCreateNew] = useState(false);
 
-  async function getData() {
-    const url = "http://localhost:4000/api/content";
-    const response = await fetch(url).then((res) => res.json());
-    response.sort((a, b) => parseInt(b.date) - parseInt(a.date));
-    setAllData(response);
-  }
-  useEffect(() => {
-    getData();
-  }, []);
+  const { loading, error, data } = useQuery(getData);
 
-  useEffect(() => {
-    setSelected(allData[0]);
-  }, [allData]);
+  const [createData] = useMutation(create);
 
-  async function updateData(data) {
-    if (data._id) {
-      const allDataCopy = allData.slice();
-      const foundIndex = allDataCopy.findIndex((e) => e._id === data._id);
-      allDataCopy[foundIndex] = {
-        ...allDataCopy[foundIndex],
-        title: data.title,
-        body: data.body,
-      };
-      setAllData(allDataCopy);
+  const [updateData] = useMutation(update);
 
-      const url = `http://localhost:4000/api/content/${data._id}`;
-      const response = await fetch(url, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      console.log(response.json());
-    }
+  const [deleteData] = useMutation(deleteNote);
+
+  if (loading) return <p>loading...</p>;
+  if (error) return <p>error...</p>;
+
+  if (createNew) {
+    return <NewContent createData={createData} setCreateNew={setCreateNew} />;
   }
 
-  async function deleteData(id) {
-    // update local
-    const allDataCopy = allData.slice();
-    const foundIndex = allDataCopy.findIndex((element) => element._id === id);
-    allDataCopy.splice(foundIndex, 1);
-    setAllData(allDataCopy);
-
-    // update server/database
-    const url = `http://localhost:4000/api/content/${id}`;
-    await fetch(url, {
-      method: "DELETE",
-    });
-  }
-
-  function createDataLocal() {
-    // console.log("create");
-    setCreateNew(true);
-    setSelected({
-      title: "",
-      body: "",
-    });
-  }
-
-  async function createDataToServer(data) {
-    console.log("data: ", data);
-    const url = `http://localhost:4000/api/content/`;
-    await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-    setCreateNew(false);
-    getData();
-  }
   return (
     <>
       <Box display="flex" height="100vh">
@@ -141,7 +86,7 @@ export function MainUI() {
           justifyContent="center"
           alignItems="center"
         >
-          <IconButton onClick={createDataLocal}>
+          <IconButton onClick={() => setCreateNew(true)}>
             <Add color="primary" />
           </IconButton>
         </Box>
@@ -152,7 +97,7 @@ export function MainUI() {
           flexDirection="column"
         >
           <TitleColumn
-            allData={allData}
+            allData={data.allNotes}
             setSelected={setSelected}
             deleteData={deleteData}
           />
@@ -162,8 +107,8 @@ export function MainUI() {
             selected={selected}
             setSelected={setSelected}
             updateData={updateData}
-            createNew={createNew}
-            createDataToServer={createDataToServer}
+            // createNew={createNew}
+            // createDataToServer={createDataToServer}
           />
         </Box>
       </Box>

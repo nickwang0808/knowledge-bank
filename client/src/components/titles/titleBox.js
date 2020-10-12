@@ -68,7 +68,7 @@ export default function TitleBox({ data, setSelected, deleteData }) {
               onClick={(e) => {
                 e.stopPropagation();
                 console.log("delete");
-                deleteData(data._id);
+                deleteData({ variables: { id: data.id } });
               }}
             >
               <DeleteOutline className={classes.deleteButton} />

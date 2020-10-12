@@ -56,7 +56,6 @@ async function create(parent, args, context, info) {
       author: { connect: { id: userId } },
     },
   });
-  console.log({ note });
   return note;
 }
 
@@ -64,7 +63,7 @@ async function update(parent, args, context) {
   getUserId(context);
   const note = await context.prisma.note.update({
     where: {
-      id: args.id,
+      id: Number(args.id),
     },
     data: {
       title: args.title,
@@ -76,9 +75,9 @@ async function update(parent, args, context) {
 
 async function deleteNote(parent, args, context) {
   getUserId(context);
-  await context.prisma.note.update({
+  await context.prisma.note.delete({
     where: {
-      id: args.id,
+      id: Number(args.id),
     },
   });
   return true;

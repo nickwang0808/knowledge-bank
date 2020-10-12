@@ -14,12 +14,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Content({
-  selected,
-  updateData,
-  createNew,
-  createDataToServer,
-}) {
+export default function Content({ selected, updateData }) {
   const classes = useStyles();
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
@@ -29,18 +24,8 @@ export default function Content({
     selected && setBody(selected.body);
   }, [selected]);
 
-  const updateDataToGlobal = () => {
-    createNew
-      ? createDataToServer({
-          title: title,
-          body: body,
-          author: "Nick",
-        })
-      : updateData({
-          _id: selected._id,
-          title: title,
-          body: body,
-        });
+  const pushUpdate = () => {
+    updateData({ variables: { id: selected.id, title: title, body: body } });
   };
 
   return (
@@ -50,10 +35,10 @@ export default function Content({
           <InputBase
             className={classes.title}
             placeholder="New Document Tittle"
-            autoFocus={createNew ? true : false}
+            // autoFocus={createNew ? true : false}
             value={title || ""}
             onChange={(e) => setTitle(e.target.value)}
-            onBlur={updateDataToGlobal}
+            onBlur={pushUpdate}
           />
           <CKEditor
             editor={ClassicEditor}
@@ -66,7 +51,7 @@ export default function Content({
               // console.log("CKEditor onChange");
               setBody(editor.getData());
             }}
-            onBlur={updateDataToGlobal}
+            onBlur={pushUpdate}
           />
         </>
       )}
