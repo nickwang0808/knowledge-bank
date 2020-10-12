@@ -19,7 +19,7 @@ export default function TitleColumn({ allData, setSelected, deleteData }) {
       <Box flexGrow="1" component="div" className="titleColumn">
         {allData.map((data) => (
           <TitleBox
-            key={data._id}
+            key={data.id}
             data={data}
             setSelected={setSelected}
             deleteData={deleteData}
