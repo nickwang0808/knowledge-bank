@@ -18,4 +18,4 @@
 
 implement graphql
 
-- crud
+- modify cache on delete and creates
