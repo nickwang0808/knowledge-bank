@@ -22,7 +22,7 @@ async function signUp(parent, args, context) {
       data: { username: username, password: password },
     });
     const token = jwt.sign({ userId: user.id }, SECRET);
-    return { token, user };
+    return { isLoggedIn: true, token, user };
   }
 }
 
@@ -42,13 +42,13 @@ async function login(parent, args, context) {
       throw new Error("Wrong password");
     } else {
       const token = jwt.sign({ userId: user.id }, SECRET);
-      return { token, user };
+      return { isLoggedIn: true, token, user };
     }
   }
 }
 
 async function create(parent, args, context, info) {
-  const userId = getUserId(context);
+  const userId = await getUserId(context);
   const note = await context.prisma.note.create({
     data: {
       title: args.title,
@@ -60,7 +60,7 @@ async function create(parent, args, context, info) {
 }
 
 async function update(parent, args, context) {
-  getUserId(context);
+  await getUserId(context);
   const note = await context.prisma.note.update({
     where: {
       id: Number(args.id),
@@ -74,7 +74,7 @@ async function update(parent, args, context) {
 }
 
 async function deleteNote(parent, args, context) {
-  getUserId(context);
+  await getUserId(context);
   await context.prisma.note.delete({
     where: {
       id: Number(args.id),

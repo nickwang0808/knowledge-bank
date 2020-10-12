@@ -49,6 +49,23 @@ export default function TitleBox({ data, setSelected, deleteData }) {
   const classes = useStyles();
   const [mouseEnter, setMouseEnter] = useState(false);
 
+  const handleDeleteNote = (id) => {
+    deleteData({
+      variables: { id },
+      update(cache) {
+        cache.modify({
+          fields: {
+            allNotes(existingNotes, { readField }) {
+              return existingNotes.filter(
+                (noteRef) => id !== readField("id", noteRef)
+              );
+            },
+          },
+        });
+      },
+    });
+  };
+
   return (
     <>
       <Box
@@ -68,7 +85,7 @@ export default function TitleBox({ data, setSelected, deleteData }) {
               onClick={(e) => {
                 e.stopPropagation();
                 console.log("delete");
-                deleteData({ variables: { id: data.id } });
+                handleDeleteNote(data.id);
               }}
             >
               <DeleteOutline className={classes.deleteButton} />

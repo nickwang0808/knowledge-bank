@@ -34,3 +34,29 @@ export const deleteNote = gql`
     deleteNote(id: $id)
   }
 `;
+
+export const login = gql`
+  mutation Login($username: String!, $password: String!) {
+    login(username: $username, password: $password) {
+      token
+      isLoggedIn
+    }
+  }
+`;
+
+export const signUp = gql`
+  mutation SignUp($username: String!, $password: String!) {
+    signUp(username: $username, password: $password) {
+      token
+      isLoggedIn
+    }
+  }
+`;
+
+export const checkAuth = gql`
+  {
+    checkAuth {
+      isLoggedIn
+    }
+  }
+`;

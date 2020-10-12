@@ -27,7 +27,6 @@ code {
 
 .ck-editor__editable_inline {
   height: 80vh;
-  max-width: 826px;
 }
 
 .ck-editor__main > .ck-editor__editable:not(.ck-focused) {

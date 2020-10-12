@@ -18,4 +18,5 @@
 
 implement graphql
 
-- modify cache on delete and creates
+- now touch up css
+- implement animation

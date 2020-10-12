@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import CKEditor from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
@@ -14,21 +14,29 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function NewContent({ setCreateNew, createData }) {
+export default function NewContent({
+  setCreateNew,
+  createData,
+  createLoading,
+  refetch,
+}) {
   const classes = useStyles();
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
 
-  const pushUpdate = () => {
+  const handleCreateNote = () => {
     if (title !== "") {
       createData({ variables: { title: title, body: body } });
     }
     setCreateNew(false);
+    refetch();
   };
 
+  if (createLoading) return <p>saving...</p>;
+
   return (
-    <Box pl={2} pt={2}>
-      <>
+    <Box px={1} pt={1}>
+      <Box display="flex" alignItems="center">
         <InputBase
           className={classes.title}
           placeholder="New Document Tittle"
@@ -36,20 +44,29 @@ export default function NewContent({ setCreateNew, createData }) {
           value={title || ""}
           onChange={(e) => setTitle(e.target.value)}
         />
-        <Button onClick={() => pushUpdate()}>Save</Button>
-        <CKEditor
-          editor={ClassicEditor}
-          data={body || ""}
-          onInit={(editor) => {
-            // You can store the "editor" and use when it is needed.
-            console.log("Editor is ready to use!", editor);
-          }}
-          onChange={(event, editor) => {
-            // console.log("CKEditor onChange");
-            setBody(editor.getData());
-          }}
-        />
-      </>
+        <div>
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            onClick={() => handleCreateNote()}
+          >
+            Save
+          </Button>
+        </div>
+      </Box>
+      <CKEditor
+        editor={ClassicEditor}
+        data={body || ""}
+        onInit={(editor) => {
+          // You can store the "editor" and use when it is needed.
+          console.log("Editor is ready to use!", editor);
+        }}
+        onChange={(event, editor) => {
+          // console.log("CKEditor onChange");
+          setBody(editor.getData());
+        }}
+      />
     </Box>
   );
 }

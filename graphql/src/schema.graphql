@@ -1,4 +1,5 @@
 type Query {
+  checkAuth: AuthPayload
   allNotes: [Note!]!
 }
 

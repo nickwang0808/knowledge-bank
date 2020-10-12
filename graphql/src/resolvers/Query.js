@@ -12,4 +12,13 @@ async function allNotes(parent, args, context) {
   return notes;
 }
 
-module.exports = { allNotes };
+async function checkAuth(parent, args, context) {
+  try {
+    await getUserId(context);
+    return { isLoggedIn: true };
+  } catch (err) {
+    return { isLoggedIn: false };
+  }
+}
+
+module.exports = { allNotes, checkAuth };
