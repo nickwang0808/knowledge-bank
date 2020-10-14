@@ -14,9 +14,8 @@
 - GET all data
 - POST add new data
 
-##### note
+##### todo
 
-implement graphql
-
-- now touch up css
+- touch up css
 - implement animation
+- implement Oauth
