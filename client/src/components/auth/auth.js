@@ -69,17 +69,17 @@ export function LoginOrRegister({ showLogin, setShowLogin, action }) {
               <Box fontSize="40px">Knowledge Bank</Box>
               <Box fontSize="16px">Remember everything important.</Box>
             </Box>
-            <Button variant="outlined" fullWidth className={classes.buttonText}>
+            {/* <Button variant="outlined" fullWidth className={classes.buttonText}>
               <img
                 src={google}
                 style={{ marginRight: "8px" }}
                 alt="google icon"
               />
               Continue with Google
-            </Button>
-            <Box textAlign="center" fontSize="12x" color="#a6a6a6">
+            </Button> */}
+            {/* <Box textAlign="center" fontSize="12x" color="#a6a6a6">
               or
-            </Box>
+            </Box> */}
 
             <TextField
               label="Username"
