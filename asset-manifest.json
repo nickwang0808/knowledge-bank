@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/knowledge-bank/static/css/main.4c1d1b51.chunk.css",
+    "main.js": "/knowledge-bank/static/js/main.23734380.chunk.js",
+    "main.js.map": "/knowledge-bank/static/js/main.23734380.chunk.js.map",
+    "runtime-main.js": "/knowledge-bank/static/js/runtime-main.b14f5d29.js",
+    "runtime-main.js.map": "/knowledge-bank/static/js/runtime-main.b14f5d29.js.map",
+    "static/js/2.1187c615.chunk.js": "/knowledge-bank/static/js/2.1187c615.chunk.js",
+    "static/js/2.1187c615.chunk.js.map": "/knowledge-bank/static/js/2.1187c615.chunk.js.map",
+    "index.html": "/knowledge-bank/index.html",
+    "precache-manifest.f74df602821a3aad5d2f8b85ae7facb9.js": "/knowledge-bank/precache-manifest.f74df602821a3aad5d2f8b85ae7facb9.js",
+    "service-worker.js": "/knowledge-bank/service-worker.js",
+    "static/css/main.4c1d1b51.chunk.css.map": "/knowledge-bank/static/css/main.4c1d1b51.chunk.css.map",
+    "static/js/2.1187c615.chunk.js.LICENSE.txt": "/knowledge-bank/static/js/2.1187c615.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.b14f5d29.js",
+    "static/js/2.1187c615.chunk.js",
+    "static/css/main.4c1d1b51.chunk.css",
+    "static/js/main.23734380.chunk.js"
+  ]
+}
