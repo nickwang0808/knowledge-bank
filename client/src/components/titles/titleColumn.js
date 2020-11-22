@@ -4,8 +4,9 @@ import TitleBox from "./titleBox";
 
 const useStyles = makeStyles({
   notes: {
-    color: "#878787",
+    color: "white",
     fontSize: " 21px",
+    backgroundColor: "#616161",
   },
 });
 
@@ -13,7 +14,7 @@ export default function TitleColumn({ allData, setSelected, deleteData }) {
   const classes = useStyles();
   return (
     <>
-      <Box className={classes.notes} m={3}>
+      <Box className={classes.notes} p={3}>
         NOTES
       </Box>
       <Box flexGrow="1" component="div" className="titleColumn">

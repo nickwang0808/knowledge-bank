@@ -94,7 +94,8 @@ export default function TitleBox({ data, setSelected, deleteData }) {
         )}
         <Box className={classes.title}>{data.title}</Box>
         <Box className={classes.date}>
-          {moment(parseInt(data.date, 10)).startOf("hour").fromNow()}
+          {/* {moment(parseInt(data.date, 10)).startOf("hour").fromNow()} */}
+          Just Now
         </Box>
         <Box className={classes.body}>
           {data.body.replace(/<\/?[^>]+(>|$)/g, " ")}

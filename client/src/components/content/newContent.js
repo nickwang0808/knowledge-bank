@@ -24,12 +24,13 @@ export default function NewContent({
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
 
-  const handleCreateNote = () => {
+  const handleCreateNote = async () => {
     if (title !== "") {
       createData({ variables: { title: title, body: body } });
     }
     setCreateNew(false);
-    refetch();
+    await refetch();
+    // window.location.reload();
   };
 
   if (createLoading) return <p>saving...</p>;

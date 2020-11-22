@@ -15,13 +15,14 @@ import {
 import { setContext } from "@apollo/client/link/context";
 
 const httpLink = createHttpLink({
-  uri: "http://localhost:4000/",
+  // uri: "http://35.241.124.138:4000/",
+  uri: "http://35.225.225.127:4000/",
 });
 
 const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem("token");
-  // const token =
-  //   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjgsImlhdCI6MTYwMjM4NzA5Nn0.Es5IgjTDsiLfgfEqcpj58o5GOO1kJkNk3071aPlziNM";
+  // const token = localStorage.getItem("token");
+  const token =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjExLCJpYXQiOjE2MDU5NjI0ODF9.9j4sTFOIA0YC-sOB-xadJpUNeVel58sypIgEH-anaPk";
   return {
     headers: {
       ...headers,

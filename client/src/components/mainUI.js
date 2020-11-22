@@ -31,7 +31,9 @@ export default function MainUI() {
 
   const [selected, setSelected] = useState(null);
   const [createNew, setCreateNew] = useState(false);
-  const { loading, error, data, refetch } = useQuery(getData);
+  const { loading, error, data, refetch } = useQuery(getData, {
+    pollInterval: 500,
+  });
   const [updateData] = useMutation(update);
   const [createData, { loading: createLoading }] = useMutation(create);
   const [deleteData] = useMutation(deleteNote);
